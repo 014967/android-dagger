@@ -36,12 +36,10 @@ class LoginActivity : AppCompatActivity() {
     @Inject
     lateinit var loginViewModel: LoginViewModel
 
-    @Inject
-    lateinit var loginComponent: LoginComponent
     private lateinit var errorTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        loginComponent = (application as MyApplication).appComponent.loginComponent().create()
+        (application as MyApplication).appComponent.loginComponent().create().inject(this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)

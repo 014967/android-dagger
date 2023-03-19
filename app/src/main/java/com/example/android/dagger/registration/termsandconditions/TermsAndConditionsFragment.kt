@@ -34,8 +34,8 @@ class TermsAndConditionsFragment : Fragment() {
     lateinit var registrationViewModel: RegistrationViewModel
 
     override fun onAttach(context: Context) {
-        (activity as RegistrationActivity).registrationComponent.inject(this)
         super.onAttach(context)
+        (activity as RegistrationActivity).registrationComponent.inject(this)
     }
     override fun onCreateView(
         inflater: LayoutInflater,

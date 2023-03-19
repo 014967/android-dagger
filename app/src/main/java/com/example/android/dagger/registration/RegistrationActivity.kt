@@ -28,12 +28,10 @@ import javax.inject.Inject
 
 class RegistrationActivity : AppCompatActivity() {
 
-
-    @Inject
-    lateinit var registrationViewModel : RegistrationViewModel
-
-    @Inject
     lateinit var registrationComponent: RegistrationComponent
+
+    @Inject
+    lateinit var registrationViewModel: RegistrationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         registrationComponent = (application as MyApplication).appComponent.registrationComponent().create()

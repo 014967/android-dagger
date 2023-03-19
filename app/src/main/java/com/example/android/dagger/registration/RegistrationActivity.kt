@@ -31,7 +31,7 @@ class RegistrationActivity : AppCompatActivity() {
 
     @Inject
     lateinit var registrationViewModel : RegistrationViewModel
-    
+
     @Inject
     lateinit var registrationComponent: RegistrationComponent
 

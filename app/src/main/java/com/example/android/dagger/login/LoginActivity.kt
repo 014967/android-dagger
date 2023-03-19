@@ -17,39 +17,48 @@
 package com.example.android.dagger.login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
-import com.example.android.dagger.main.MainActivity
 import com.example.android.dagger.MyApplication
 import com.example.android.dagger.R
+import com.example.android.dagger.main.MainActivity
 import com.example.android.dagger.registration.RegistrationActivity
+import javax.inject.Inject
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var loginViewModel: LoginViewModel
+    @Inject
+    lateinit var loginViewModel: LoginViewModel
+
+    @Inject
+    lateinit var loginComponent: LoginComponent
     private lateinit var errorTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        loginComponent = (application as MyApplication).appComponent.loginComponent().create()
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         // Creates ViewModel and listens for the loginState LiveData
-        loginViewModel = LoginViewModel((application as MyApplication).userManager)
-        loginViewModel.loginState.observe(this, Observer<LoginViewState> { state ->
-            when (state) {
-                is LoginSuccess -> {
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+        loginViewModel.loginState.observe(
+            this,
+            Observer<LoginViewState> { state ->
+                when (state) {
+                    is LoginSuccess -> {
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    }
+                    is LoginError -> errorTextView.visibility = View.VISIBLE
                 }
-                is LoginError -> errorTextView.visibility = View.VISIBLE
             }
-        })
+        )
 
         errorTextView = findViewById(R.id.error)
         setupViews()
@@ -70,8 +79,8 @@ class LoginActivity : AppCompatActivity() {
             loginViewModel.unregister()
             val intent = Intent(this, RegistrationActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK or
-                    Intent.FLAG_ACTIVITY_NEW_TASK
+                Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
     }

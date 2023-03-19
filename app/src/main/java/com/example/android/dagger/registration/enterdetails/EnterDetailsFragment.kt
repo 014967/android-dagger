@@ -54,7 +54,7 @@ class EnterDetailsFragment : Fragment() {
     private lateinit var passwordEditText: EditText
 
     override fun onAttach(context: Context) {
-        (requireActivity().application as MyApplication).appComponent.inject(this)
+        (activity as RegistrationActivity).registrationComponent.inject(this)
         super.onAttach(context)
 
     }
